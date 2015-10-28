@@ -8,6 +8,12 @@
 #define GRIDDLE_H
 
 class Griddle {
+    public:
+        Griddle(int thermostatPin);
+        void setTemperature(float temp);
+
+    private:
+        int _thermostatPin;
 };
 
 #endif
