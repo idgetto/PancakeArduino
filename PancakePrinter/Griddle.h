@@ -10,15 +10,20 @@
 #include <Arduino.h>
 #include <Servo.h>
 
-class Griddle {
+#include "Initializable.h"
+
+class Griddle : public Initializable {
     public:
-        void attach(uint8_t themostatPin);
+        Griddle(uint8_t thermostatPin);
         void setTemperature(unsigned temp);
 
         static const unsigned MIN_TEMPERATURE = 0;
         static const unsigned MAX_TEMPERATURE = 400;
         static const unsigned MIN_DEGREES = 0;
         static const unsigned MAX_DEGREES = 170;
+        
+    protected:
+        void _init();
 
     private:
         uint8_t _thermostatPin;

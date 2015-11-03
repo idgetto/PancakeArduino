@@ -1,11 +1,11 @@
 #include "Griddle.h"
 
-void Griddle::attach(uint8_t thermostatPin) {
+Griddle::Griddle(uint8_t thermostatPin) {
     _thermostatPin = thermostatPin;
-    _thermostatServo.attach(_thermostatPin);
 }
 
 void Griddle::setTemperature(unsigned temp) {
+    assertInitialized();
     int degrees = temperatureToDegrees(temp);
     _thermostatServo.write(degrees);
 }
@@ -17,4 +17,8 @@ int Griddle::temperatureToDegrees(float temp) {
                Griddle::MAX_DEGREES, 
                Griddle::MIN_DEGREES);
     return degrees;
+}
+
+void Griddle::_init() {
+    _thermostatServo.attach(_thermostatPin);
 }

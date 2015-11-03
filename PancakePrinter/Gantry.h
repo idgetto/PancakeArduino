@@ -7,14 +7,17 @@
 #ifndef GANTRY_H
 #define GANTRY_H
 
+#include <Arduino.h>
+
 class Gantry {
     public:
         Gantry( int xMotorShieldAddr, int xStepperPort,
                 int yMotorShieldAddr, int yStepperPort);
-        void move(float x, float y, float speed = DEFAULT_SPEED);
+        void init();
+        void move(float x, float y, float speed = Gantry::DEFAULT_SPEED);
 
     private:
-        const float DEFAULT_SPEED = 10;
+        static const float DEFAULT_SPEED = 10;
 
         int _xMotorShieldAddr;
         int _yMotorShieldAddr;
