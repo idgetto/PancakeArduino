@@ -9,16 +9,30 @@
 
 #define DEFAULT_SPEED 10
 
-class Extruder {
+#include <Wire.h>
+#include <Adafruit_MotorShield.h>
+#include "utility/Adafruit_PWMServoDriver.h"
+#include "Initializable.h"
+
+class Extruder : public Initializable {
     public:
-        Extruder(int pumpPin, int solenoidPin);
-        void extrude(float speed = DEFAULT_SPEED);
-        void stop();
+        Extruder(int pumpMotorShieldAddr, int pumpMotorPort, int solenoidPin);
+        void extrudeOn(float speed = DEFAULT_SPEED);
+        void extrudeOff();
+
+    protected:
+        void _init();
 
     private:
+        int _pumpMotorShieldAddr;
+        Adafruit_MotorShield _motorShield;
+        int _pumpMotorPort;
+        Adafruit_DCMotor *_pumpMotor;
 
-        int _pumpPin;
         int _solenoidPin;
+
+        void openValve();
+        void closeValve();
 };
 
 #endif
