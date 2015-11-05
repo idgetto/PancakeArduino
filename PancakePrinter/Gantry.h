@@ -7,6 +7,14 @@
 #ifndef GANTRY_H
 #define GANTRY_H
 
+#define DEFAULT_SPEED 10
+#define STEPS_PER_REV 200
+
+#define DIST_PER_TOOTH 5.0f
+#define NUM_PULLEY_TEETH 26
+#define DIST_PER_REV ((NUM_PULLEY_TEETH) * (DIST_PER_TOOTH))
+#define DIST_PER_STEP ((DIST_PER_REV) / (STEPS_PER_REV))
+
 #include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_MotorShield.h>
@@ -18,14 +26,14 @@ class Gantry : public Initializable {
     public:
         Gantry( int xMotorShieldAddr, int xStepperPort,
                 int yMotorShieldAddr, int yStepperPort);
-        void move(float x, float y, float speed = Gantry::DEFAULT_SPEED);
+        void moveTo(float x, float y, float speed = DEFAULT_SPEED);
 
     protected:
         void _init();
 
     private:
-        static const float DEFAULT_SPEED = 10;
-        static const unsigned STEPS_PER_REV = 200;
+        float _x;
+        float _y;
 
         int _xMotorShieldAddr;
         int _yMotorShieldAddr;
@@ -36,6 +44,13 @@ class Gantry : public Initializable {
         Adafruit_MotorShield _yMotorShield;
         Adafruit_StepperMotor *_xStepper;
         Adafruit_StepperMotor *_yStepper;
+
+        void moveLinear(int xSteps, int ySteps, float speed);
+        int distToSteps(float dist);
+        float stepsToDist(int steps);
+        void xStep(int steps, int direction);
+        void yStep(int steps, int direction);
+        int getStepDirection(int steps); 
 };
 
 #endif

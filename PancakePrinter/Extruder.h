@@ -7,6 +7,8 @@
 #ifndef EXTRUDER_H
 #define EXTRUDER_H
 
+#define DEFAULT_SPEED 10
+
 class Extruder {
     public:
         Extruder(int pumpPin, int solenoidPin);
@@ -14,7 +16,6 @@ class Extruder {
         void stop();
 
     private:
-        const float DEFAULT_SPEED = 10;
 
         int _pumpPin;
         int _solenoidPin;
