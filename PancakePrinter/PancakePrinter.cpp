@@ -1,8 +1,11 @@
 #include "PancakePrinter.h"
 
 PancakePrinter::PancakePrinter() :
-    _gantry{0x60, 2, 0x61, 2},
-    _griddle{9} {
+    _gantry{PancakePrinter::GANTRY_X_MOTOR_SHIELD_ADDR, 
+            PancakePrinter::GANTRY_X_STEPPER_PORT,
+            PancakePrinter::GANTRY_Y_MOTOR_SHIELD_ADDR,
+            PancakePrinter::GANTRY_Y_STEPPER_PORT},
+    _griddle{PancakePrinter::GRIDDLE_PIN} {
 }
 
 void PancakePrinter::_init() {
