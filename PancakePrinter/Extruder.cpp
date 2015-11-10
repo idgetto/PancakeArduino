@@ -1,34 +1,42 @@
 #include "Extruder.h"
 #include <Arduino.h>
 
-Extruder::Extruder(int pumpMotorShieldAddr, int pumpMotorPort, int solenoidPin) :
-    _pumpMotorShieldAddr{pumpMotorShieldAddr},
-    _motorShield{pumpMotorShieldAddr},
-    _pumpMotorPort{pumpMotorPort},
-    _solenoidPin{solenoidPin} {
-    _pumpMotor = _motorShield.getMotor(_pumpMotorPort); 
+Extruder::Extruder(Adafruit_DCMotor *pumpMotor, 
+                   Adafruit_DCMotor *solenoidMotor) :
+                   _pumpMotor{pumpMotor},
+                   _solenoidMotor{solenoidMotor} {
+    Serial.println("Extruder");
 }
 
 void Extruder::extrudeOn(float speed) {
+    Serial.println("Extrude On");
     openValve();
-    _pumpMotor->setSpeed(speed);
-    _pumpMotor->run(FORWARD);
+    runPump(speed);
 }
 
 void Extruder::extrudeOff() {
-    _pumpMotor->run(RELEASE);
+    Serial.println("Extrude Off");
+    stopPump();
     closeValve();
 }
 
-void Extruder::openValve() {
-    analogWrite(_solenoidPin, HIGH);
+void Extruder::runPump(int speed) {
+    Serial.println("Pump On");
+    _pumpMotor->setSpeed(128);
+    _pumpMotor->run(FORWARD);
 }
+
+void Extruder::stopPump() {
+    Serial.println("Pump Off");
+    _pumpMotor->run(RELEASE);
+}
+
+void Extruder::openValve() {
+    _solenoidMotor->setSpeed(255);
+    _solenoidMotor->run(FORWARD);
+}
+
 
 void Extruder::closeValve() {
-    analogWrite(_solenoidPin, LOW);
-}
-
-void Extruder::_init() {
-    _motorShield.begin();
-    pinMode(_solenoidPin, OUTPUT);
+    _solenoidMotor->run(RELEASE);
 }

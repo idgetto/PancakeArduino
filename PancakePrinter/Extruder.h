@@ -7,32 +7,27 @@
 #ifndef EXTRUDER_H
 #define EXTRUDER_H
 
-#define DEFAULT_SPEED 10
+#define DEFAULT_SPEED 125
 
 #include <Wire.h>
 #include <Adafruit_MotorShield.h>
 #include "utility/Adafruit_PWMServoDriver.h"
-#include "Initializable.h"
 
-class Extruder : public Initializable {
+class Extruder {
     public:
-        Extruder(int pumpMotorShieldAddr, int pumpMotorPort, int solenoidPin);
+        Extruder(Adafruit_DCMotor *pumpMotor, 
+                 Adafruit_DCMotor *solenoidMotor);
         void extrudeOn(float speed = DEFAULT_SPEED);
         void extrudeOff();
 
-    protected:
-        void _init();
-
     private:
-        int _pumpMotorShieldAddr;
-        Adafruit_MotorShield _motorShield;
-        int _pumpMotorPort;
         Adafruit_DCMotor *_pumpMotor;
-
-        int _solenoidPin;
+        Adafruit_DCMotor *_solenoidMotor;
 
         void openValve();
         void closeValve();
+        void runPump(int speed);
+        void stopPump();
 };
 
 #endif

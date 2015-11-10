@@ -8,8 +8,6 @@ class Initializable {
     protected:
         virtual void _init() = 0;
         void assertInitialized();
-
-    private:
         bool _initialized;
 };
 

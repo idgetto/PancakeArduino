@@ -1,20 +1,23 @@
 #include "PancakePrinter.h"
+#include <Arduino.h>
 
 PancakePrinter::PancakePrinter() :
-    _gantry{PancakePrinter::GANTRY_X_MOTOR_SHIELD_ADDR, 
-            PancakePrinter::GANTRY_X_STEPPER_PORT,
-            PancakePrinter::GANTRY_Y_MOTOR_SHIELD_ADDR,
-            PancakePrinter::GANTRY_Y_STEPPER_PORT},
+    _topMotorShield{0x61},
+    _botMotorShield{0x60},
+    _xStepper{_topMotorShield.getStepper(200, 1)},
+    _yStepper{_topMotorShield.getStepper(200, 2)},
+    _pumpMotor{_botMotorShield.getMotor(2)},
+    _solenoidMotor{_botMotorShield.getMotor(4)},
     _griddle{PancakePrinter::GRIDDLE_PIN},
-    _extruder{PancakePrinter::EXTRUDER_MOTOR_SHIELD_ADDR,
-              PancakePrinter::EXTRUDER_MOTOR_PORT,
-              PancakePrinter::EXTRUDER_SOLENOID_PIN} {
+    _gantry{_xStepper, _yStepper},
+    _extruder{_pumpMotor, _solenoidMotor} {
+        Serial.println("PP::PP");
 }
 
-void PancakePrinter::_init() {
-    _gantry.init();
+void PancakePrinter::init() {
+    _topMotorShield.begin();
+    _botMotorShield.begin();
     _griddle.init();
-    _extruder.init();
 }
 
 void PancakePrinter::moveTo(float x, float y) {

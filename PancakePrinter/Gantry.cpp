@@ -2,20 +2,17 @@
 
 #include "Gantry.h"
 
-Gantry::Gantry( int xMotorShieldAddr, int xStepperPort,
-                int yMotorShieldAddr, int yStepperPort) :
-                    _xMotorShieldAddr{xMotorShieldAddr},
-                    _xStepperPort{xStepperPort},
-                    _yMotorShieldAddr{yMotorShieldAddr},
-                    _yStepperPort{yStepperPort},
-                    _xMotorShield{_xMotorShieldAddr},
-                    _yMotorShield{_yMotorShieldAddr} {
-    _xStepper = _xMotorShield.getStepper(STEPS_PER_REV, _xStepperPort);
-    _yStepper = _yMotorShield.getStepper(STEPS_PER_REV, _yStepperPort);
+Gantry::Gantry(Adafruit_StepperMotor *xStepper,
+               Adafruit_StepperMotor *yStepper) :
+    _xStepper{xStepper},
+    _yStepper{yStepper} {
+        _xStepper->setSpeed(30);
+        _yStepper->setSpeed(30);
+        Serial.println("HERE");
+        Serial.println("Gantry");
 }
 
 void Gantry::moveTo(float x, float y, float speed) {
-    assertInitialized();
     float dx = x - _x;
     float dy = y - _y;
     int xSteps = distToSteps(dx);
@@ -89,22 +86,15 @@ float Gantry::stepsToDist(int steps) {
 void Gantry::xStep(int steps, int direction) {
     Serial.print("x: ");
     Serial.println(steps);
-    assertInitialized();
     _xStepper->step(steps, direction, DOUBLE);
 }
 
 void Gantry::yStep(int steps, int direction) {
     Serial.print("y: ");
     Serial.println(steps);
-    assertInitialized();
     _yStepper->step(steps, direction, DOUBLE);
 }
 
 int Gantry::getStepDirection(int steps) {
     return steps > 0 ? FORWARD : BACKWARD;
-}
-
-void Gantry::_init() {
-    _xMotorShield.begin();
-    _yMotorShield.begin();
 }

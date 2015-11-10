@@ -12,21 +12,19 @@
 
 #include "Initializable.h"
 
-class Griddle : public Initializable {
+class Griddle {
     public:
-        Griddle(uint8_t thermostatPin);
-        void setTemperature(unsigned temp);
+        Griddle(int thermostatPin);
+        void setTemperature(float temp);
+        void init();
 
         static const unsigned MIN_TEMPERATURE = 0;
         static const unsigned MAX_TEMPERATURE = 400;
         static const unsigned MIN_DEGREES = 0;
         static const unsigned MAX_DEGREES = 170;
-        
-    protected:
-        void _init();
 
     private:
-        uint8_t _thermostatPin;
+        int _thermostatPin;
         Servo _thermostatServo;
 
         int temperatureToDegrees(float temp);

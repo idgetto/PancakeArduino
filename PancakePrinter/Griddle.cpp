@@ -1,13 +1,14 @@
 #include "Griddle.h"
 
-Griddle::Griddle(uint8_t thermostatPin) {
-    _thermostatPin = thermostatPin;
+Griddle::Griddle(int thermostatPin) : _thermostatPin{thermostatPin} {
 }
 
-void Griddle::setTemperature(unsigned temp) {
-    assertInitialized();
+void Griddle::setTemperature(float temp) {
     int degrees = temperatureToDegrees(temp);
+    Serial.print("Degrees: ");
+    Serial.println(degrees);
     _thermostatServo.write(degrees);
+    delay(100);
 }
 
 int Griddle::temperatureToDegrees(float temp) {
@@ -19,6 +20,9 @@ int Griddle::temperatureToDegrees(float temp) {
     return degrees;
 }
 
-void Griddle::_init() {
+void Griddle::init() {
+    Serial.print("Thermo Pin: ");
+    Serial.println(_thermostatPin);
     _thermostatServo.attach(_thermostatPin);
+    Serial.println("attached!");
 }

@@ -20,12 +20,10 @@
 #include <Adafruit_MotorShield.h>
 #include "utility/Adafruit_PWMServoDriver.h"
 
-#include "Initializable.h"
-
-class Gantry : public Initializable {
+class Gantry {
     public:
-        Gantry( int xMotorShieldAddr, int xStepperPort,
-                int yMotorShieldAddr, int yStepperPort);
+        Gantry(Adafruit_StepperMotor *xStepper,
+               Adafruit_StepperMotor *yStepper);
         void moveTo(float x, float y, float speed = DEFAULT_SPEED);
 
     protected:
@@ -35,13 +33,6 @@ class Gantry : public Initializable {
         float _x;
         float _y;
 
-        int _xMotorShieldAddr;
-        int _yMotorShieldAddr;
-        int _xStepperPort;
-        int _yStepperPort;
-
-        Adafruit_MotorShield _xMotorShield;
-        Adafruit_MotorShield _yMotorShield;
         Adafruit_StepperMotor *_xStepper;
         Adafruit_StepperMotor *_yStepper;
 

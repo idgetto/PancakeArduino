@@ -4,23 +4,60 @@
 #include <Gantry.h>
 #include <PancakePrinter.h>
 
-PancakePrinter pp;
+  PancakePrinter pp;
 
+  
 void setup() {
   Serial.begin(9600);
+  delay(500);
+  Serial.println("testing...");
+
   pp.init();
+  
+  dots();
+  //back_and_forth();
 }
 
 void loop() {
-  pp.setTemperature(400);
-  pp.extrudeOn();
+//  Serial.println("loop");
+//  pp.setTemperature(0);
+//  pp.extrudeOn();
+//  
+//  // make a square
+//  pp.moveTo(0, 100);
+//  pp.setTemperature(400);
+//
+//  pp.extrudeOff();
+//  pp.moveTo(100, 100);
+//    pp.setTemperature(0);
+//
+//  pp.extrudeOff();
+//  pp.moveTo(100, 0);
+//  pp.setTemperature(400);
+//  
+//  pp.extrudeOn();
+//  pp.moveTo(0, 0);
   
-  // make a square
-  pp.moveTo(0, 100);
-  pp.moveTo(100, 100);
-  pp.moveTo(100, 0);  
-  pp.moveTo(0, 0);
-  
-  pp.extrudeOff();
-  pp.setTemperature(0);
+//  pp.extrudeOn();
+//  delay(1000);
+//  pp.extrudeOff();
+//  delay(1000);
+}
+
+void dots() {
+  pp.setTemperature(Griddle::MAX_TEMPERATURE);
+  for (int i = 0; i < 265; i += 50) {
+    pp.moveTo(i, i);
+    pp.extrudeOn();
+    delay(500);
+    pp.extrudeOff();
+    delay(500);
+  } 
+}
+
+void back_and_forth() {
+  while (true) {
+    pp.moveTo(100, 100);
+    pp.moveTo(0, 0);
+  }
 }
