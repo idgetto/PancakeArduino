@@ -4,17 +4,24 @@
 #include "Gantry.h"
 #include "Griddle.h"
 #include "Extruder.h"
-#include "Initializable.h"
+#include "Interpreter.h"
 
 class PancakePrinter {
     public:
         PancakePrinter();
+        void run(String commandStr);
         void moveTo(float x, float y);
         void setTemperature(float temp);
         void extrudeOn();
         void extrudeOff();
         void init();
+
     private:
+        void runMoveCommand(PrinterMoveCommand *command);
+        void runTempCommand(PrinterTempCommand *command);
+        void runExtrudeCommand(PrinterExtrudeCommand *command);
+        void runDelayCommand(PrinterDelayCommand *command);
+
         Adafruit_MotorShield _topMotorShield;
         Adafruit_MotorShield _botMotorShield;
         Adafruit_StepperMotor *_xStepper;
@@ -25,6 +32,7 @@ class PancakePrinter {
         Griddle _griddle;
         Gantry _gantry;
         Extruder _extruder;
+        Interpreter _interpreter;
 
         static const int GANTRY_X_MOTOR_SHIELD_ADDR = 0x61;
         static const int GANTRY_Y_MOTOR_SHIELD_ADDR = 0x61;

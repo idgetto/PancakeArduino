@@ -1,21 +1,44 @@
 #include <Servo.h>
 #include <Adafruit_MotorShield.h>
 #include <Wire.h>
-#include <Gantry.h>
 #include <PancakePrinter.h>
 
-  PancakePrinter pp;
+PancakePrinter pp;
+
+char NEW_LINE = '\n';
+String DONE_STRING = "DONE";
 
   
 void setup() {
+  // start serial communication
   Serial.begin(9600);
-  delay(500);
-  Serial.println("testing...");
+  while (!Serial) {
+      ;
+  }
 
+  // start up the printer
   pp.init();
-  
-  dots();
-  //back_and_forth();
+
+  // execute commands one at a time
+  bool done = false;
+  while (!done) {
+      if (Serial.available() > 0) {
+          String command = Serial.readStringUntil(NEW_LINE);
+          command.trim();
+          
+          if (command.compareTo(DONE_STRING) == 0) {
+              done = true;
+          } else {
+              pp.run(command);
+              ack(command);
+          }
+      }
+
+  }
+}
+
+void ack(String command) {
+    Serial.println(command);
 }
 
 void loop() {

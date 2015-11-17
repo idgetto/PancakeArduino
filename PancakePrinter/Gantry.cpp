@@ -8,8 +8,6 @@ Gantry::Gantry(Adafruit_StepperMotor *xStepper,
     _yStepper{yStepper} {
         _xStepper->setSpeed(30);
         _yStepper->setSpeed(30);
-        Serial.println("HERE");
-        Serial.println("Gantry");
 }
 
 void Gantry::moveTo(float x, float y, float speed) {
@@ -38,14 +36,6 @@ void Gantry::moveLinear(int xSteps, int ySteps, float speed) {
 
     // find the slope of the linear path
     float slope = abs((float) ySteps / xSteps);
-    Serial.print("x-steps: ");
-    Serial.println(xSteps);
-
-    Serial.print("y-steps: ");
-    Serial.println(ySteps);
-
-    Serial.print("Slope: ");
-    Serial.println(slope);
 
     // keep track of how many steps 
     // have been taken in each direction
@@ -84,14 +74,10 @@ float Gantry::stepsToDist(int steps) {
 }
 
 void Gantry::xStep(int steps, int direction) {
-    Serial.print("x: ");
-    Serial.println(steps);
     _xStepper->step(steps, direction, DOUBLE);
 }
 
 void Gantry::yStep(int steps, int direction) {
-    Serial.print("y: ");
-    Serial.println(steps);
     _yStepper->step(steps, direction, DOUBLE);
 }
 

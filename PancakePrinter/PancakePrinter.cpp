@@ -1,5 +1,6 @@
-#include "PancakePrinter.h"
 #include <Arduino.h>
+
+#include "PancakePrinter.h"
 
 PancakePrinter::PancakePrinter() :
     _topMotorShield{0x61},
@@ -11,7 +12,45 @@ PancakePrinter::PancakePrinter() :
     _griddle{PancakePrinter::GRIDDLE_PIN},
     _gantry{_xStepper, _yStepper},
     _extruder{_pumpMotor, _solenoidMotor} {
-        Serial.println("PP::PP");
+}
+
+void PancakePrinter::run(String commandStr) {
+    PrinterCommand *command = _interpreter.interpret(commandStr);
+    switch (command->type()) {
+        case PrinterCommandType::MOVE:
+            runMoveCommand((PrinterMoveCommand *) command);
+            break;
+        case PrinterCommandType::TEMP:
+            runTempCommand((PrinterTempCommand *) command);
+            break;
+        case PrinterCommandType::EXTRUDE:
+            runExtrudeCommand((PrinterExtrudeCommand *) command);
+            break;
+        case PrinterCommandType::DELAY:
+            runDelayCommand((PrinterDelayCommand *) command);
+            break;
+    }
+    delete command;
+}
+
+void PancakePrinter::runMoveCommand(PrinterMoveCommand *command) {
+    moveTo(command->getX(), command->getY());
+}
+
+void PancakePrinter::runTempCommand(PrinterTempCommand *command) {
+    setTemperature(command->getTemperature());
+}
+
+void PancakePrinter::runExtrudeCommand(PrinterExtrudeCommand *command) {
+    if (command->extrude()) {
+        extrudeOn();
+    } else {
+        extrudeOff();
+    }
+}
+
+void PancakePrinter::runDelayCommand(PrinterDelayCommand *command) {
+    delay(command->getDelay());
 }
 
 void PancakePrinter::init() {
