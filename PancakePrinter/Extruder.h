@@ -7,7 +7,7 @@
 #ifndef EXTRUDER_H
 #define EXTRUDER_H
 
-#define DEFAULT_SPEED 125
+#define DEFAULT_EXTRUDER_SPEED 125
 
 #include <Wire.h>
 #include <Adafruit_MotorShield.h>
@@ -17,7 +17,7 @@ class Extruder {
     public:
         Extruder(Adafruit_DCMotor *pumpMotor, 
                  Adafruit_DCMotor *solenoidMotor);
-        void extrudeOn(float speed = DEFAULT_SPEED);
+        void extrudeOn(float speed = DEFAULT_EXTRUDER_SPEED);
         void extrudeOff();
 
     private:

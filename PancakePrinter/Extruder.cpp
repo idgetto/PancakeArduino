@@ -18,7 +18,7 @@ void Extruder::extrudeOff() {
 }
 
 void Extruder::runPump(int speed) {
-    _pumpMotor->setSpeed(128);
+    _pumpMotor->setSpeed(200);
     _pumpMotor->run(FORWARD);
 }
 

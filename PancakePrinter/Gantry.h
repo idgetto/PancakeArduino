@@ -7,7 +7,7 @@
 #ifndef GANTRY_H
 #define GANTRY_H
 
-#define DEFAULT_SPEED 10
+#define DEFAULT_GANTRY_SPEED 10
 #define STEPS_PER_REV 200
 
 #define DIST_PER_TOOTH 5.0f
@@ -24,7 +24,7 @@ class Gantry {
     public:
         Gantry(Adafruit_StepperMotor *xStepper,
                Adafruit_StepperMotor *yStepper);
-        void moveTo(float x, float y, float speed = DEFAULT_SPEED);
+        void moveTo(float x, float y, float speed = DEFAULT_GANTRY_SPEED);
 
     protected:
         void _init();

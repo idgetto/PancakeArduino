@@ -19,22 +19,10 @@ void setup() {
   // start up the printer
   pp.init();
 
-  // execute commands one at a time
-  bool done = false;
-  while (!done) {
-      if (Serial.available() > 0) {
-          String command = Serial.readStringUntil(NEW_LINE);
-          command.trim();
-          
-          if (command.compareTo(DONE_STRING) == 0) {
-              done = true;
-          } else {
-              pp.run(command);
-              ack(command);
-          }
-      }
+  // listen for commands
+  pp.readRecipe();
 
-  }
+  pp.runRecipe();
 }
 
 void ack(String command) {
