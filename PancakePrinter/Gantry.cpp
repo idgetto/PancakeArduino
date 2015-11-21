@@ -1,23 +1,31 @@
 #include <math.h>
 
 #include "Gantry.h"
+#include <Arduino.h>
 
 Gantry::Gantry(Adafruit_StepperMotor *xStepper,
                Adafruit_StepperMotor *yStepper) :
     _xStepper{xStepper},
     _yStepper{yStepper} {
-        _xStepper->setSpeed(30);
-        _yStepper->setSpeed(30);
+        _xStepper->setSpeed(100);
+        _yStepper->setSpeed(100);
 }
 
 void Gantry::moveTo(float x, float y, float speed) {
     float dx = x - _x;
     float dy = y - _y;
-    int xSteps = distToSteps(dx);
-    int ySteps = distToSteps(dy);
+    int xSteps = distToStepsMajorAxis(dx);
+    int ySteps = distToStepsMinorAxis(dy);
+
+    Serial.print("xsteps: ");
+    Serial.println(xSteps);
+
+    Serial.print("ysteps: ");
+    Serial.println(ySteps);
+
     moveLinear(dx, dy, speed);
-    _x += stepsToDist(xSteps);
-    _y += stepsToDist(ySteps);
+    _x += stepsToDistMajorAxis(xSteps);
+    _y += stepsToDistMinorAxis(ySteps);
 }
 
 void Gantry::moveLinear(int xSteps, int ySteps, float speed) {
@@ -65,12 +73,20 @@ void Gantry::moveLinear(int xSteps, int ySteps, float speed) {
     }
 }
 
-int Gantry::distToSteps(float dist) {
-    return dist / DIST_PER_STEP;
+int Gantry::distToStepsMajorAxis(float dist) {
+    return dist / DIST_PER_STEP_MAJOR_AXIS;
 }
 
-float Gantry::stepsToDist(int steps) {
-    return steps * DIST_PER_STEP;
+int Gantry::distToStepsMinorAxis(float dist) {
+    return dist / DIST_PER_STEP_MINOR_AXIS;
+}
+
+float Gantry::stepsToDistMajorAxis(int steps) {
+    return steps * DIST_PER_STEP_MAJOR_AXIS;
+}
+
+float Gantry::stepsToDistMinorAxis(int steps) {
+    return steps * DIST_PER_STEP_MINOR_AXIS;
 }
 
 void Gantry::xStep(int steps, int direction) {
