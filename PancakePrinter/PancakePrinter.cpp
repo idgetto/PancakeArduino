@@ -5,67 +5,55 @@
 PancakePrinter::PancakePrinter() :
     _topMotorShield{0x61},
     _botMotorShield{0x60},
-    _xStepper{_topMotorShield.getStepper(200, 1)},
-    _yStepper{_topMotorShield.getStepper(200, 2)},
+    _xStepper{_botMotorShield.getStepper(200, 2)},
+    _yStepper{_topMotorShield.getStepper(200, 1)},
     _pumpMotor{_botMotorShield.getMotor(2)},
-    _solenoidMotor{_botMotorShield.getMotor(4)},
+    _solenoidMotor{_topMotorShield.getMotor(3)},
     _griddle{PancakePrinter::GRIDDLE_PIN},
     _gantry{_xStepper, _yStepper},
     _extruder{_pumpMotor, _solenoidMotor},
     _commandQueue{10} {
 }
 
-void PancakePrinter::readRecipe() {
-    // Wait for a Serial connection
+// Listen for commands over serial
+// and run them as they come.
+//
+// Send back a completed message when
+// a command has finished executing
+void PancakePrinter::listen() {
+
+    // ensure serial is ready
     while (!Serial) {
         delay(10);
     }
 
-    Serial.println("Ready for commands");
+    Serial.println("Ready for commands!");
 
-    // Read in all the commands
+    // keep executing commands until
+    // we read the 'DONE' command
     bool done = false;
     while (!done) {
         if (Serial.available() > 0) {
-            String command = Serial.readStringUntil('\n');
-            command.trim();
-            Serial.print("Reading ");
-            Serial.println(command);
-            Serial.print("done?: ");
-            Serial.println(command.compareTo("DONE"));
-            if (command.compareTo("DONE") == 0) {
+
+            String command = _commandCourier.readCommand();
+            _commandCourier.reportGot(command);
+
+            if (command.compareTo(DONE_COMMAND) == 0) {
                 done = true;
             } else {
-                _commandQueue.pushCommand(command);
+                run(command);
+                _commandCourier.reportComplete(command);
             }
         }
     }
 
-    Serial.println("Read all commands");
+    finish();
 }
 
-void PancakePrinter::runRecipe() {
-    Serial.println("About to run recipe");
-
-    while (!_commandQueue.empty()) {
-        String command = _commandQueue.popCommand();
-
-        Serial.print("Running command: ");
-        Serial.println(command);
-
-        run(command);
-    }
-}
-
-void PancakePrinter::getNextCommand(CommandQueue& q) {
-    Serial.println("COMMAND REQUEST");
-    while (Serial.available() <= 0) {
-        delay(1);
-    }
-    if (Serial.available() > 0) {
-        String command = Serial.readStringUntil('\n');
-        q.pushCommand(command);
-    }
+void PancakePrinter::finish() {
+    extrudeOff();
+    setTemperature(0);
+    moveTo(0, 0);
 }
 
 void PancakePrinter::run(String commandStr) {
@@ -128,3 +116,5 @@ void PancakePrinter::extrudeOn() {
 void PancakePrinter::extrudeOff() {
     _extruder.extrudeOff();
 }
+
+const String PancakePrinter::DONE_COMMAND = "DONE";

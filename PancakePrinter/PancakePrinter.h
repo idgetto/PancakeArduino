@@ -6,12 +6,13 @@
 #include "Extruder.h"
 #include "Interpreter.h"
 #include "CommandQueue.h"
+#include "CommandCourier.h"
 
 class PancakePrinter {
     public:
         PancakePrinter();
-        void readRecipe();
-        void runRecipe();
+        void listen();
+        void finish();
         void run(String commandStr);
         void moveTo(float x, float y);
         void setTemperature(float temp);
@@ -39,9 +40,10 @@ class PancakePrinter {
         Extruder _extruder;
         Interpreter _interpreter;
 
+        CommandCourier _commandCourier;
         CommandQueue _commandQueue;
 
-        static const int GANTRY_X_MOTOR_SHIELD_ADDR = 0x61;
+        static const int GANTRY_X_MOTOR_SHIELD_ADDR = 0x60;
         static const int GANTRY_Y_MOTOR_SHIELD_ADDR = 0x61;
         static const int GANTRY_X_STEPPER_PORT = 2;
         static const int GANTRY_Y_STEPPER_PORT = 1;
@@ -52,6 +54,8 @@ class PancakePrinter {
         static const int PUMP_MOTOR_PORT = 1;
         static const int SOLENOID_MOTOR_SHIELD_ADDR = 0x60;
         static const int SOLENOID_MOTOR_PORT = 2;
+
+        static const String DONE_COMMAND;
 };
 
 #endif
