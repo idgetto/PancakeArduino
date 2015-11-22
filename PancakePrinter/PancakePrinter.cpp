@@ -15,11 +15,12 @@ PancakePrinter::PancakePrinter() :
     _commandQueue{10} {
 }
 
-// Listen for commands over serial
+PancakePrinter::~PancakePrinter() {
+    finish();
+}
+
+// Listen for recipes over serial
 // and run them as they come.
-//
-// Send back a completed message when
-// a command has finished executing
 void PancakePrinter::listen() {
 
     // ensure serial is ready
@@ -27,8 +28,23 @@ void PancakePrinter::listen() {
         delay(10);
     }
 
-    Serial.println("Ready for commands!");
+    Serial.println("listen()");
 
+    while (true) {
+        if (Serial.available() > 0) {
+            String command = _commandCourier.readCommand();
+            Serial.print("Arduino: ");
+            Serial.println(command);
+            if (command.compareTo(BEGIN_RECIPE) == 0) {
+                Serial.println(READY);
+                listenForRecipe();
+            }
+        }
+    }
+
+}
+
+void PancakePrinter::listenForRecipe() {
     // keep executing commands until
     // we read the 'DONE' command
     bool done = false;
@@ -46,7 +62,6 @@ void PancakePrinter::listen() {
             }
         }
     }
-
     finish();
 }
 
@@ -118,3 +133,5 @@ void PancakePrinter::extrudeOff() {
 }
 
 const String PancakePrinter::DONE_COMMAND = "DONE";
+const String PancakePrinter::BEGIN_RECIPE = "BEGIN RECIPE";
+const String PancakePrinter::READY = "READY";

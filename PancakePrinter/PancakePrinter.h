@@ -11,6 +11,7 @@
 class PancakePrinter {
     public:
         PancakePrinter();
+        ~PancakePrinter();
         void listen();
         void finish();
         void run(String commandStr);
@@ -21,12 +22,11 @@ class PancakePrinter {
         void init();
 
     private:
+        void listenForRecipe();
         void runMoveCommand(PrinterMoveCommand *command);
         void runTempCommand(PrinterTempCommand *command);
         void runExtrudeCommand(PrinterExtrudeCommand *command);
         void runDelayCommand(PrinterDelayCommand *command);
-
-        void getNextCommand(CommandQueue& q);
 
         Adafruit_MotorShield _topMotorShield;
         Adafruit_MotorShield _botMotorShield;
@@ -56,6 +56,8 @@ class PancakePrinter {
         static const int SOLENOID_MOTOR_PORT = 2;
 
         static const String DONE_COMMAND;
+        static const String BEGIN_RECIPE;
+        static const String READY;
 };
 
 #endif
