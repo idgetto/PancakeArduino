@@ -1,9 +1,9 @@
 #include "Interpreter.h"
 
-String Interpreter::TEMP_STR = "TEMP";
-String Interpreter::EXTRUDE_STR = "EXTRUDE";
-String Interpreter::MOVE_STR = "MOVE";
-String Interpreter::DELAY_STR = "DELAY";
+String Interpreter::TEMP_STR = "T";
+String Interpreter::EXTRUDE_STR = "E";
+String Interpreter::MOVE_STR = "M";
+String Interpreter::DELAY_STR = "W";
 
 PrinterCommand *Interpreter::interpret(String commandStr) {
 

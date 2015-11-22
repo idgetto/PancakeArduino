@@ -9,6 +9,11 @@ String CommandCourier::readCommand() const {
     return command;
 }
 
+void CommandCourier::requestCommands() {
+    Serial.println(READY);
+    Serial.flush();
+}
+
 void CommandCourier::reportGot(String command) const {
     String msg = CommandCourier::GOT_MSG;
     msg.replace(CommandCourier::COMMAND, command);
@@ -25,6 +30,7 @@ void CommandCourier::reportComplete(String command) const {
     Serial.flush();
 }
 
+const String CommandCourier::READY = "READY";
 const String CommandCourier::COMMAND = "COMMAND";
 const String CommandCourier::GOT_MSG = "Got: \"COMMAND\"";
 const String CommandCourier::COMPLETED_MSG = "Completed: \"COMMAND\"";

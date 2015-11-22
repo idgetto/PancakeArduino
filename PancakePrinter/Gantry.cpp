@@ -17,12 +17,6 @@ void Gantry::moveTo(float x, float y, float speed) {
     int xSteps = distToStepsMajorAxis(dx);
     int ySteps = distToStepsMinorAxis(dy);
 
-    Serial.print("xsteps: ");
-    Serial.println(xSteps);
-
-    Serial.print("ysteps: ");
-    Serial.println(ySteps);
-
     moveLinear(dx, dy, speed);
     _x += stepsToDistMajorAxis(xSteps);
     _y += stepsToDistMinorAxis(ySteps);

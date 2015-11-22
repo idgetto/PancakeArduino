@@ -33,10 +33,7 @@ void PancakePrinter::listen() {
     while (true) {
         if (Serial.available() > 0) {
             String command = _commandCourier.readCommand();
-            Serial.print("Arduino: ");
-            Serial.println(command);
             if (command.compareTo(BEGIN_RECIPE) == 0) {
-                Serial.println(READY);
                 listenForRecipe();
             }
         }
@@ -48,20 +45,23 @@ void PancakePrinter::listenForRecipe() {
     // keep executing commands until
     // we read the 'DONE' command
     bool done = false;
+    bool commandsPending = false;
     while (!done) {
         if (Serial.available() > 0) {
+            commandsPending = false;
 
             String command = _commandCourier.readCommand();
-            _commandCourier.reportGot(command);
-
             if (command.compareTo(DONE_COMMAND) == 0) {
                 done = true;
             } else {
                 run(command);
-                _commandCourier.reportComplete(command);
             }
+        } else if (!commandsPending) {
+            _commandCourier.requestCommands();
+            commandsPending = true;
         }
     }
+
     finish();
 }
 
@@ -132,6 +132,6 @@ void PancakePrinter::extrudeOff() {
     _extruder.extrudeOff();
 }
 
-const String PancakePrinter::DONE_COMMAND = "DONE";
+const String PancakePrinter::DONE_COMMAND = "D";
 const String PancakePrinter::BEGIN_RECIPE = "BEGIN RECIPE";
 const String PancakePrinter::READY = "READY";
