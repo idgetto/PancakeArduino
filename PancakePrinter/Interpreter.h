@@ -23,6 +23,7 @@ class Interpreter {
         PrinterExtrudeCommand *parseExtrudeCommand(String commandStr);
         PrinterMoveCommand *parseMoveCommand(String commandStr);
         PrinterDelayCommand *parseDelayCommand(String commandStr);
+        void detailedPrint(String str) const;
 };
 
 #endif

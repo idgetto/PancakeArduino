@@ -7,7 +7,7 @@ String Interpreter::DELAY_STR = "W";
 
 PrinterCommand *Interpreter::interpret(String commandStr) {
 
-    if (commandStr.startsWith(TEMP_STR)) { 
+    if (commandStr.startsWith(TEMP_STR)) {
         return parseTempCommand(commandStr);
     } else if (commandStr.startsWith(EXTRUDE_STR)) {
         return parseExtrudeCommand(commandStr);
@@ -18,8 +18,20 @@ PrinterCommand *Interpreter::interpret(String commandStr) {
     } else {
         Serial.println("Could not interpret command: ");
         Serial.println(commandStr);
+        detailedPrint(commandStr);
         return NULL;
     }
+}
+
+void Interpreter::detailedPrint(String str) const {
+    String buffer = "";
+    for (int i = 0; i < str.length(); ++i) {
+        buffer.concat(i);
+        buffer.concat(": ");
+        buffer.concat(str.charAt(i));
+        buffer.concat('\n');
+    }
+    Serial.print(buffer);
 }
 
 PrinterTempCommand *Interpreter::parseTempCommand(String commandStr) {

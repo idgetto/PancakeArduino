@@ -8,7 +8,7 @@ PancakePrinter::PancakePrinter() :
     _xStepper{_botMotorShield.getStepper(200, 2)},
     _yStepper{_topMotorShield.getStepper(200, 1)},
     _pumpMotor{_botMotorShield.getMotor(2)},
-    _solenoidMotor{_topMotorShield.getMotor(3)},
+    _solenoidMotor{_topMotorShield.getMotor(4)},
     _griddle{PancakePrinter::GRIDDLE_PIN},
     _gantry{_xStepper, _yStepper},
     _extruder{_pumpMotor, _solenoidMotor},
@@ -63,6 +63,7 @@ void PancakePrinter::listenForRecipe() {
     }
 
     finish();
+    Serial.println("Done!");
 }
 
 void PancakePrinter::finish() {

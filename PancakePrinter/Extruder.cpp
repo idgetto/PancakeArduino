@@ -1,7 +1,7 @@
 #include "Extruder.h"
 #include <Arduino.h>
 
-Extruder::Extruder(Adafruit_DCMotor *pumpMotor, 
+Extruder::Extruder(Adafruit_DCMotor *pumpMotor,
                    Adafruit_DCMotor *solenoidMotor) :
                    _pumpMotor{pumpMotor},
                    _solenoidMotor{solenoidMotor} {
@@ -10,15 +10,17 @@ Extruder::Extruder(Adafruit_DCMotor *pumpMotor,
 void Extruder::extrudeOn(float speed) {
     openValve();
     runPump(speed);
+    delay(500);
 }
 
 void Extruder::extrudeOff() {
     stopPump();
     closeValve();
+    delay(500);
 }
 
 void Extruder::runPump(int speed) {
-    _pumpMotor->setSpeed(200);
+    _pumpMotor->setSpeed(255);
     _pumpMotor->run(FORWARD);
 }
 
