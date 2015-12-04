@@ -7,22 +7,25 @@ Gantry::Gantry(Adafruit_StepperMotor *xStepper,
                Adafruit_StepperMotor *yStepper) :
     _xStepper{xStepper},
     _yStepper{yStepper} {
-        _xStepper->setSpeed(100);
-        _yStepper->setSpeed(100);
+        _xStepper->setSpeed(DEFAULT_SPEED);
+        _yStepper->setSpeed(DEFAULT_SPEED);
 }
 
 void Gantry::moveTo(float x, float y, float speed) {
+    _xStepper->setSpeed(speed);
+    _yStepper->setSpeed(speed);
+
     float dx = x - _x;
     float dy = y - _y;
     int xSteps = distToStepsMajorAxis(dx);
     int ySteps = distToStepsMinorAxis(dy);
 
-    moveLinear(dx, dy, speed);
+    moveLinear(dx, dy);
     _x += stepsToDistMajorAxis(xSteps);
     _y += stepsToDistMinorAxis(ySteps);
 }
 
-void Gantry::moveLinear(int xSteps, int ySteps, float speed) {
+void Gantry::moveLinear(int xSteps, int ySteps) {
     int xStepDirection = getStepDirection(xSteps);
     int yStepDirection = getStepDirection(ySteps);
 
@@ -39,7 +42,7 @@ void Gantry::moveLinear(int xSteps, int ySteps, float speed) {
     // find the slope of the linear path
     float slope = abs((float) ySteps / xSteps);
 
-    // keep track of how many steps 
+    // keep track of how many steps
     // have been taken in each direction
     int xMoved, yMoved;
     xMoved = yMoved = 0;
@@ -54,7 +57,7 @@ void Gantry::moveLinear(int xSteps, int ySteps, float speed) {
         int xSteps = 1;
         yAccum += (xSteps * slope);
 
-        // determine number of complete steps 
+        // determine number of complete steps
         // we can take in the y-direction
         int ySteps = floor(yAccum);
         yAccum -= ySteps;
