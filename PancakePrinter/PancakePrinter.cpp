@@ -3,13 +3,13 @@
 #include "PancakePrinter.h"
 
 PancakePrinter::PancakePrinter() :
-    _topMotorShield{0x61},
-    _botMotorShield{0x60},
-    _xStepper{_botMotorShield.getStepper(200, 2)},
-    _yStepper{_topMotorShield.getStepper(200, 1)},
-    _pumpMotor{_botMotorShield.getMotor(2)},
-    _solenoidMotor{_topMotorShield.getMotor(4)},
-    _griddle{PancakePrinter::GRIDDLE_PIN},
+    _topMotorShield{TOP_MOTOR_SHIELD_ADDR},
+    _botMotorShield{BOT_MOTOR_SHIELD_ADDR},
+    _xStepper{_botMotorShield.getStepper(Gantry::STEPS_PER_REV, X_STEPPER_PORT)},
+    _yStepper{_topMotorShield.getStepper(Gantry::STEPS_PER_REV, Y_STEPPER_PORT)},
+    _pumpMotor{_botMotorShield.getMotor(PUMP_MOTOR_PORT)},
+    _solenoidMotor{_topMotorShield.getMotor(SOLENOID_MOTOR_PORT)},
+    _griddle{GRIDDLE_PIN},
     _gantry{_xStepper, _yStepper},
     _extruder{_pumpMotor, _solenoidMotor},
     _commandQueue{10} {

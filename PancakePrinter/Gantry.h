@@ -18,6 +18,8 @@ class Gantry {
                Adafruit_StepperMotor *yStepper);
         void moveTo(float x, float y, float speed = DEFAULT_SPEED);
 
+        static constexpr int STEPS_PER_REV = 200;
+
     protected:
         void _init();
 
@@ -29,7 +31,6 @@ class Gantry {
         Adafruit_StepperMotor *_yStepper;
 
         static constexpr int DEFAULT_SPEED = 100;
-        static constexpr int STEPS_PER_REV = 200;
         static constexpr float DIST_PER_TOOTH = 5.0f;
         static constexpr int NUM_PULLEY_TEETH_MINOR_AXIS = 26;
         static constexpr int NUM_PULLEY_TEETH_MAJOR_AXIS = 20;

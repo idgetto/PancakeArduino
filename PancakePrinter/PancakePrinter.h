@@ -43,17 +43,17 @@ class PancakePrinter {
         CommandCourier _commandCourier;
         CommandQueue _commandQueue;
 
-        static const int GANTRY_X_MOTOR_SHIELD_ADDR = 0x60;
-        static const int GANTRY_Y_MOTOR_SHIELD_ADDR = 0x61;
-        static const int GANTRY_X_STEPPER_PORT = 2;
-        static const int GANTRY_Y_STEPPER_PORT = 1;
+        static constexpr int BOT_MOTOR_SHIELD_ADDR = 0x60;
+        static constexpr int TOP_MOTOR_SHIELD_ADDR = 0x61;
+        static constexpr int X_STEPPER_PORT = 2;
+        static constexpr int Y_STEPPER_PORT = 1;
 
-        static const int GRIDDLE_PIN = 9;
+        static constexpr int GRIDDLE_PIN = 9;
 
-        static const int PUMP_MOTOR_SHIELD_ADDR = 0x60;
-        static const int PUMP_MOTOR_PORT = 1;
-        static const int SOLENOID_MOTOR_SHIELD_ADDR = 0x60;
-        static const int SOLENOID_MOTOR_PORT = 2;
+        static constexpr int PUMP_MOTOR_SHIELD_ADDR = 0x60;
+        static constexpr int PUMP_MOTOR_PORT = 2;
+        static constexpr int SOLENOID_MOTOR_SHIELD_ADDR = 0x60;
+        static constexpr int SOLENOID_MOTOR_PORT = 4;
 
         static const String DONE_COMMAND;
         static const String BEGIN_RECIPE;
