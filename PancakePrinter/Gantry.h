@@ -11,12 +11,14 @@
 #include <Wire.h>
 #include <Adafruit_MotorShield.h>
 #include "utility/Adafruit_PWMServoDriver.h"
+#include <float.h>
 
 class Gantry {
     public:
         Gantry(Adafruit_StepperMotor *xStepper,
                Adafruit_StepperMotor *yStepper);
         void moveTo(float x, float y, float speed = DEFAULT_SPEED);
+        void calibrate();
 
         static constexpr int STEPS_PER_REV = 200;
 
@@ -27,8 +29,16 @@ class Gantry {
         float _x;
         float _y;
 
+        float _xLimit = FLT_MAX;
+        float _yLimit = FLT_MAX;
+
         Adafruit_StepperMotor *_xStepper;
         Adafruit_StepperMotor *_yStepper;
+
+        static constexpr int X_MAX_LIMIT_PIN = 2;
+        static constexpr int Y_MAX_LIMIT_PIN = 3;
+        static constexpr int X_MIN_LIMIT_PIN = 4;
+        static constexpr int Y_MIN_LIMIT_PIN = 5;
 
         static constexpr int DEFAULT_SPEED = 100;
         static constexpr float DIST_PER_TOOTH = 5.0f;
@@ -44,9 +54,10 @@ class Gantry {
         int distToStepsMinorAxis(float dist);
         float stepsToDistMajorAxis(int steps);
         float stepsToDistMinorAxis(int steps);
-        void xStep(int steps, int direction);
-        void yStep(int steps, int direction);
+        void xStep(int steps = 1, int direction = FORWARD);
+        void yStep(int steps = 1, int direction = FORWARD);
         int getStepDirection(int steps);
+        float clamp(float val, float low, float high);
 };
 
 #endif

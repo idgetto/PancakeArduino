@@ -115,6 +115,9 @@ void PancakePrinter::init() {
     _topMotorShield.begin();
     _botMotorShield.begin();
     _griddle.init();
+
+    // find the min/max travel dimensions
+    _gantry.calibrate();
 }
 
 void PancakePrinter::moveTo(float x, float y) {
