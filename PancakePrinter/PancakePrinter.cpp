@@ -5,7 +5,7 @@
 PancakePrinter::PancakePrinter() :
     _topMotorShield{TOP_MOTOR_SHIELD_ADDR},
     _botMotorShield{BOT_MOTOR_SHIELD_ADDR},
-    _xStepper{_botMotorShield.getStepper(Gantry::STEPS_PER_REV, X_STEPPER_PORT)},
+    _xStepper{_topMotorShield.getStepper(Gantry::STEPS_PER_REV, X_STEPPER_PORT)},
     _yStepper{_topMotorShield.getStepper(Gantry::STEPS_PER_REV, Y_STEPPER_PORT)},
     _pumpMotor{_botMotorShield.getMotor(PUMP_MOTOR_PORT)},
     _solenoidMotor{_topMotorShield.getMotor(SOLENOID_MOTOR_PORT)},

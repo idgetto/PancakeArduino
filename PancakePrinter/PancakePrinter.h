@@ -45,13 +45,13 @@ class PancakePrinter {
 
         static constexpr int BOT_MOTOR_SHIELD_ADDR = 0x60;
         static constexpr int TOP_MOTOR_SHIELD_ADDR = 0x61;
-        static constexpr int X_STEPPER_PORT = 2;
-        static constexpr int Y_STEPPER_PORT = 1;
+        static constexpr int X_STEPPER_PORT = 1;
+        static constexpr int Y_STEPPER_PORT = 2;
 
         static constexpr int GRIDDLE_PIN = 9;
 
         static constexpr int PUMP_MOTOR_SHIELD_ADDR = 0x60;
-        static constexpr int PUMP_MOTOR_PORT = 2;
+        static constexpr int PUMP_MOTOR_PORT = 3;
         static constexpr int SOLENOID_MOTOR_SHIELD_ADDR = 0x60;
         static constexpr int SOLENOID_MOTOR_PORT = 4;
 

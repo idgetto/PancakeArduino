@@ -23,7 +23,17 @@ void Gantry::moveTo(float x, float y, float speed) {
     int xSteps = distToStepsMajorAxis(dx);
     int ySteps = distToStepsMinorAxis(dy);
 
-    moveLinear(dx, dy);
+    // Serial.print("x: ");
+    // Serial.println(x);
+    // Serial.print("y: ");
+    // Serial.println(y);
+
+    // Serial.print("xSteps: ");
+    // Serial.println(xSteps);
+    // Serial.print("ySteps: ");
+    // Serial.println(ySteps);
+
+    moveLinear(xSteps, ySteps);
     _x += stepsToDistMajorAxis(xSteps);
     _y += stepsToDistMinorAxis(ySteps);
 }
@@ -31,6 +41,10 @@ void Gantry::moveTo(float x, float y, float speed) {
 // determine how far the gantry
 // can move in each direction
 void Gantry::calibrate() {
+    // take it slow
+    // _xStepper->setSpeed(10);
+    // _yStepper->setSpeed(10);
+
     // move until we hit the x max limit switch
     while (digitalRead(X_MAX_LIMIT_PIN) == LOW) {
         xStep();
@@ -63,10 +77,16 @@ void Gantry::calibrate() {
     _xLimit = stepsToDistMajorAxis(xMaxSteps);
     _yLimit = stepsToDistMinorAxis(yMaxSteps);
 
+    Serial.print("x max steps: ");
+    Serial.println(xMaxSteps);
+    Serial.print("y max steps: ");
+    Serial.println(yMaxSteps);
+
     Serial.print("x limit: ");
     Serial.println(_xLimit);
     Serial.print("y limit: ");
     Serial.println(_yLimit);
+    Serial.flush();
 }
 
 void Gantry::moveLinear(int xSteps, int ySteps) {

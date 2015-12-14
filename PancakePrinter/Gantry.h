@@ -36,18 +36,18 @@ class Gantry {
         Adafruit_StepperMotor *_yStepper;
 
         static constexpr int X_MAX_LIMIT_PIN = 2;
-        static constexpr int Y_MAX_LIMIT_PIN = 3;
-        static constexpr int X_MIN_LIMIT_PIN = 4;
-        static constexpr int Y_MIN_LIMIT_PIN = 5;
+        static constexpr int Y_MAX_LIMIT_PIN = 5;
+        static constexpr int X_MIN_LIMIT_PIN = 3;
+        static constexpr int Y_MIN_LIMIT_PIN = 4;
 
         static constexpr int DEFAULT_SPEED = 100;
-        static constexpr float DIST_PER_TOOTH = 5.0f;
+        static constexpr double DIST_PER_TOOTH = 5.0;
         static constexpr int NUM_PULLEY_TEETH_MINOR_AXIS = 26;
         static constexpr int NUM_PULLEY_TEETH_MAJOR_AXIS = 20;
-        static constexpr float DIST_PER_REV_MINOR_AXIS = NUM_PULLEY_TEETH_MINOR_AXIS * DIST_PER_TOOTH;
-        static constexpr float DIST_PER_REV_MAJOR_AXIS = NUM_PULLEY_TEETH_MAJOR_AXIS * DIST_PER_TOOTH;
-        static constexpr float DIST_PER_STEP_MINOR_AXIS = DIST_PER_REV_MINOR_AXIS / STEPS_PER_REV;
-        static constexpr float DIST_PER_STEP_MAJOR_AXIS = DIST_PER_REV_MAJOR_AXIS / STEPS_PER_REV;
+        static constexpr double DIST_PER_REV_MINOR_AXIS = NUM_PULLEY_TEETH_MINOR_AXIS * DIST_PER_TOOTH;
+        static constexpr double DIST_PER_REV_MAJOR_AXIS = NUM_PULLEY_TEETH_MAJOR_AXIS * DIST_PER_TOOTH;
+        static constexpr double DIST_PER_STEP_MINOR_AXIS = DIST_PER_REV_MINOR_AXIS / STEPS_PER_REV;
+        static constexpr double DIST_PER_STEP_MAJOR_AXIS = DIST_PER_REV_MAJOR_AXIS / STEPS_PER_REV;
 
         void moveLinear(int xSteps, int ySteps);
         int distToStepsMajorAxis(float dist);
