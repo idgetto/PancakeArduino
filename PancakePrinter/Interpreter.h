@@ -8,6 +8,7 @@
 #include "PrinterTempCommand.h"
 #include "PrinterExtrudeCommand.h"
 #include "PrinterDelayCommand.h"
+#include "PrinterHomeCommand.h"
 
 class Interpreter {
     public:
@@ -17,12 +18,14 @@ class Interpreter {
         static String EXTRUDE_STR;
         static String MOVE_STR;
         static String DELAY_STR;
+        static String HOME_STR;
 
     private:
         PrinterTempCommand *parseTempCommand(String commandStr);
         PrinterExtrudeCommand *parseExtrudeCommand(String commandStr);
         PrinterMoveCommand *parseMoveCommand(String commandStr);
         PrinterDelayCommand *parseDelayCommand(String commandStr);
+        PrinterHomeCommand *parseHomeCommand(String homeCommand);
         void detailedPrint(String str) const;
 };
 

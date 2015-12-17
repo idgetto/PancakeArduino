@@ -19,6 +19,7 @@ class Gantry {
                Adafruit_StepperMotor *yStepper);
         void moveTo(float x, float y, float speed = DEFAULT_SPEED);
         void calibrate();
+        void release();
 
         static constexpr int STEPS_PER_REV = 200;
 

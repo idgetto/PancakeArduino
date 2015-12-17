@@ -38,6 +38,11 @@ void Gantry::moveTo(float x, float y, float speed) {
     _y += stepsToDistMinorAxis(ySteps);
 }
 
+void Gantry::release() {
+    _xStepper->release();
+    _yStepper->release();
+}
+
 // determine how far the gantry
 // can move in each direction
 void Gantry::calibrate() {
@@ -151,11 +156,15 @@ float Gantry::stepsToDistMinorAxis(int steps) {
 }
 
 void Gantry::xStep(int steps, int direction) {
-    _xStepper->step(steps, direction, DOUBLE);
+    for (int i = 0; i < steps; ++i) {
+        _xStepper->step(1, direction, DOUBLE);
+    }
 }
 
 void Gantry::yStep(int steps, int direction) {
-    _yStepper->step(steps, direction, DOUBLE);
+    for (int i = 0; i < steps; ++i) {
+        _yStepper->step(1, direction, DOUBLE);
+    }
 }
 
 int Gantry::getStepDirection(int steps) {

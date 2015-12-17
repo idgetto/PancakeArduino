@@ -10,7 +10,7 @@ Extruder::Extruder(Adafruit_DCMotor *pumpMotor,
 void Extruder::extrudeOn(float speed) {
     openValve();
     runPump(speed);
-    delay(500);
+    delay(850);
 }
 
 void Extruder::extrudeOff() {

@@ -8,7 +8,7 @@ PancakePrinter::PancakePrinter() :
     _xStepper{_topMotorShield.getStepper(Gantry::STEPS_PER_REV, X_STEPPER_PORT)},
     _yStepper{_topMotorShield.getStepper(Gantry::STEPS_PER_REV, Y_STEPPER_PORT)},
     _pumpMotor{_botMotorShield.getMotor(PUMP_MOTOR_PORT)},
-    _solenoidMotor{_topMotorShield.getMotor(SOLENOID_MOTOR_PORT)},
+    _solenoidMotor{_botMotorShield.getMotor(SOLENOID_MOTOR_PORT)},
     _griddle{GRIDDLE_PIN},
     _gantry{_xStepper, _yStepper},
     _extruder{_pumpMotor, _solenoidMotor},
@@ -37,8 +37,13 @@ void PancakePrinter::listen() {
                 listenForRecipe();
             }
         }
+        release();
     }
 
+}
+
+void PancakePrinter::release() {
+    _gantry.release();
 }
 
 void PancakePrinter::listenForRecipe() {
@@ -87,6 +92,9 @@ void PancakePrinter::run(String commandStr) {
         case PrinterCommandType::DELAY:
             runDelayCommand((PrinterDelayCommand *) command);
             break;
+        case PrinterCommandType::HOME:
+            runHomeCommand((PrinterDelayCommand *) command);
+            break;
     }
     delete command;
 }
@@ -111,11 +119,18 @@ void PancakePrinter::runDelayCommand(PrinterDelayCommand *command) {
     delay(command->getDelay());
 }
 
+void PancakePrinter::runHomeCommand(PrinterHomeCommand *command) {
+    moveTo(0, 0);
+}
+
 void PancakePrinter::init() {
     _topMotorShield.begin();
     _botMotorShield.begin();
     _griddle.init();
 
+}
+
+void PancakePrinter::calibrate() {
     // find the min/max travel dimensions
     _gantry.calibrate();
 }

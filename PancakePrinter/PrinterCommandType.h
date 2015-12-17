@@ -6,6 +6,7 @@ namespace PrinterCommandType {
     const int TEMP = 1;
     const int EXTRUDE = 2;
     const int DELAY = 3;
+    const int HOME = 4;
 }
 
 #endif

@@ -14,12 +14,14 @@ class PancakePrinter {
         ~PancakePrinter();
         void listen();
         void finish();
+        void calibrate();
         void run(String commandStr);
         void moveTo(float x, float y);
         void setTemperature(float temp);
         void extrudeOn();
         void extrudeOff();
         void init();
+        void release();
 
     private:
         void listenForRecipe();
