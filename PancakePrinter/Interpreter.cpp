@@ -4,6 +4,7 @@ String Interpreter::TEMP_STR = "T";
 String Interpreter::EXTRUDE_STR = "E";
 String Interpreter::MOVE_STR = "M";
 String Interpreter::DELAY_STR = "W";
+String Interpreter::HOME_STR = "H";
 
 PrinterCommand *Interpreter::interpret(String commandStr) {
 
@@ -15,6 +16,8 @@ PrinterCommand *Interpreter::interpret(String commandStr) {
         return parseMoveCommand(commandStr);
     } else if (commandStr.startsWith(DELAY_STR)) {
         return parseDelayCommand(commandStr);
+    } else if (commandStr.startsWith(HOME_STR)) {
+        return parseHomeCommand(commandStr);
     } else {
         Serial.println("Could not interpret command: ");
         Serial.println(commandStr);
@@ -70,4 +73,8 @@ PrinterDelayCommand *Interpreter::parseDelayCommand(String commandStr) {
 
     int delay = delayStr.toInt();
     return new PrinterDelayCommand(delay);
+}
+
+PrinterHomeCommand *Interpreter::parseHomeCommand(String commandStr) {
+    return new PrinterHomeCommand();
 }
