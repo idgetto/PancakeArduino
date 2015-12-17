@@ -29,6 +29,7 @@ class PancakePrinter {
         void runTempCommand(PrinterTempCommand *command);
         void runExtrudeCommand(PrinterExtrudeCommand *command);
         void runDelayCommand(PrinterDelayCommand *command);
+        void runHomeCommand(PrinterHomeCommand *command);
 
         Adafruit_MotorShield _topMotorShield;
         Adafruit_MotorShield _botMotorShield;

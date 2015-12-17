@@ -93,7 +93,7 @@ void PancakePrinter::run(String commandStr) {
             runDelayCommand((PrinterDelayCommand *) command);
             break;
         case PrinterCommandType::HOME:
-            runHomeCommand((PrinterDelayCommand *) command);
+            runHomeCommand((PrinterHomeCommand *) command);
             break;
     }
     delete command;

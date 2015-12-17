@@ -1,5 +1,5 @@
 #include "PrinterHomeCommand.h"
 
-int PrinterDelayCommand::type() const {
+int PrinterHomeCommand::type() const {
     return PrinterCommandType::HOME;
 }
